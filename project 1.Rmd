@@ -1,0 +1,33 @@
+---
+title: "project 1"
+author: "Xinya Liu"
+        "Yuechen Tang"
+date: "11/2/2019"
+output: html_document
+---
+
+
+```{r}
+### create two vectors
+
+x <- c(1, 2, 3, 4, 5, 6)
+x
+y <- c(7, 8, 9, 10, 11, 12)
+y
+
+### combine two vectors into a new long vector
+
+z <- c(x[1], y[1], x[2], y[2], x[3], y[3], x[4], y[4], x[5], y[5], x[6], y[6])
+
+### convert it into matrix
+
+M_0 <- matrix(z, ncol=6, nrow=2);M_0
+
+### name the rows and columns
+
+rownames = c("Witch", "Zombie")
+colnames = c("Gummy", "Lollipop", "Taffy", "Gumdrops", "Bubble Gum", "Fizzies")
+dimnames = list(rownames, colnames)
+Halloween <- matrix(M_0, nrow=2, dimnames=dimnames)
+Halloween
+```
