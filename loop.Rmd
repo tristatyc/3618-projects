@@ -1,0 +1,43 @@
+---
+title: "loops"
+author: "Xinya Liu"
+        "Yuechen Tang"
+date: "11/9/2019"
+output: html_document
+---
+
+
+```{r}
+# set up the values
+n <- 10
+n_total <- 12*n
+L <- 200000
+i <- 0.03
+
+# calculate the monthly rate and payment size
+monthly_rate <- ((1 + i)^(1/12))-1
+payment_size <- (L * monthly_rate) / (1 - (1 + monthly_rate)^ (-n_total))
+
+# create amortization table
+x <- c(0, 0, L)
+amortization_table <-matrix(0, 1+n_total, 3)
+amortization_table[1, ]<- x
+
+
+# use for loop to get the table
+for(time in 1:n_total){
+    OB <- amortization_table[time, 3]
+    I <- OB * monthly_rate
+    PR <- payment_size - I
+    OB <- OB - PR
+    amortization_table[time+1, ] <- c(I, PR, OB)
+}
+
+# name the row and column
+rownames(amortization_table) <- c("start", 1:n_total)
+colnames(amortization_table) <- c("interest paid", "principal repaid", "outstanding balance")
+
+print(amortization_table)
+
+
+```
