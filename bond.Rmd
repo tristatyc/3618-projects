@@ -1,0 +1,53 @@
+---
+title: "Bond"
+author: "Xinya Liu"
+        "Yuechen Tang"
+date: "11/23/2019"
+output: html_document
+---
+```{r}
+###set up the values
+n <- 10
+C <- 10000
+r <- 0.06
+i <- 0.04
+
+###calculate semiannually effective rate j, total number of periods n_total, coupon_size, initial book value L
+j <- 0.5*i
+n_total <- 2*n
+coupon_size <- C*(0.5*r)
+L <- (coupon_size*(1-(1+j)^(-n_total))/j) + (C*(1+j)^(-n_total))
+
+###create bond amortization table
+x <- c(0, 0, 0, L)
+bond_amortization_table <-matrix(0, 1+n_total, 4)
+bond_amortization_table[1, ]<- x
+
+###use for loop to get the table
+for(time in 1:n_total){
+    book_value <- bond_amortization_table[time, 4]
+    I <- book_value * j
+    PR <- coupon_size - I
+    book_value <- book_value - PR
+    
+    bond_amortization_table[time+1, ] <- c(coupon_size, I, PR, book_value)
+}
+
+###name the row and column
+rownames(bond_amortization_table) <- c("start", 1:n_total)
+colnames(bond_amortization_table) <- c("Coupon", "Interest", "Amount for amortization of premium", "Book Value")
+
+print(bond_amortization_table)
+
+###check
+final_book_value <- bond_amortization_table[n_total+1, 4]
+if(all.equal(final_book_value , C)){
+  print("The book value of the bond is C just after the final coupon.")
+}else{
+  print("The book value of the bond is not C just after the final coupon. Something wrong!")
+}
+
+
+
+
+```
